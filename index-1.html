@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Top Trader Zambia Podcast — Trade Smarter. Think Bigger.</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--gold:#C9A84C;--gold-light:#E8C86A;--gold-dim:rgba(201,168,76,0.12);--bg:#080C14;--bg2:#0D1421;--bg3:#111827;--surface:#141E2E;--surface2:#1A2540;--border:rgba(201,168,76,0.18);--text:#E8EDF5;--muted:#7A8BA8;--green:#22C55E;--red:#EF4444;}
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+    html{scroll-behavior:smooth;}
+    body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;overflow-x:hidden;}
+    .ticker-wrap{background:var(--bg3);border-bottom:1px solid var(--border);overflow:hidden;padding:8px 0;}
+    .ticker{display:flex;gap:48px;animation:ticker 35s linear infinite;width:max-content;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.5px;}
+    .ticker span{white-space:nowrap;}.ticker .up{color:var(--green);}.ticker .down{color:var(--red);}
+    @keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+    nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:64px;background:rgba(8,12,20,0.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);}
+    .nav-logo{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:3px;color:#fff;text-decoration:none;}
+    .nav-logo span{color:var(--gold);}
+    .nav-links{display:flex;align-items:center;gap:32px;list-style:none;}
+    .nav-links a{color:var(--muted);text-decoration:none;font-size:13px;font-weight:500;transition:color .2s;}
+    .nav-links a:hover,.nav-links a.active{color:#fff;}
+    .nav-cta{background:var(--gold)!important;color:var(--bg)!important;padding:8px 20px;border-radius:4px;font-weight:700!important;transition:background .2s!important;}
+    .nav-cta:hover{background:var(--gold-light)!important;}
+    .hero{min-height:92vh;display:flex;align-items:center;padding:80px 40px;position:relative;overflow:hidden;}
+    .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 70% 50%,rgba(201,168,76,.07) 0%,transparent 70%);pointer-events:none;}
+    .hero-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;width:100%;}
+    .hero-eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold);letter-spacing:3px;text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;gap:10px;opacity:0;animation:fadeUp .6s .1s forwards;}
+    .hero-eyebrow::before{content:'';display:inline-block;width:28px;height:1px;background:var(--gold);}
+    .hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(52px,7vw,92px);line-height:.95;letter-spacing:2px;color:#fff;opacity:0;animation:fadeUp .6s .2s forwards;}
+    .hero h1 .accent{color:var(--gold);}
+    .hero-desc{margin-top:24px;font-size:16px;color:var(--muted);line-height:1.7;max-width:420px;opacity:0;animation:fadeUp .6s .3s forwards;}
+    .hero-actions{display:flex;gap:16px;margin-top:36px;flex-wrap:wrap;opacity:0;animation:fadeUp .6s .4s forwards;}
+    .btn-primary{background:var(--gold);color:var(--bg);padding:14px 28px;border-radius:4px;font-weight:700;font-size:14px;letter-spacing:1px;text-decoration:none;transition:background .2s,transform .15s,box-shadow .2s;display:inline-flex;align-items:center;gap:8px;}
+    .btn-primary:hover{background:var(--gold-light);transform:translateY(-2px);box-shadow:0 8px 24px rgba(201,168,76,.3);}
+    .btn-outline{border:1px solid var(--border);color:var(--text);padding:14px 28px;border-radius:4px;font-weight:500;font-size:14px;text-decoration:none;transition:border-color .2s,color .2s,transform .15s;}
+    .btn-outline:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-2px);}
+    .hero-stats{display:flex;gap:40px;margin-top:48px;padding-top:32px;border-top:1px solid var(--border);opacity:0;animation:fadeUp .6s .5s forwards;}
+    .stat-num{font-family:'Bebas Neue',sans-serif;font-size:36px;color:var(--gold);letter-spacing:2px;animation:goldPulse 3s ease-in-out infinite;}
+    .stat-label{font-size:11px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-top:2px;}
+    .hero-visual{opacity:0;animation:fadeIn .8s .5s forwards;}
+    .chart-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:28px;position:relative;overflow:hidden;cursor:pointer;}
+    .chart-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),transparent);}
+    .chart-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;}
+    .chart-title{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:1px;}
+    .chart-change{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--green);background:rgba(34,197,94,.1);padding:3px 8px;border-radius:4px;}
+    .chart-value{font-family:'Bebas Neue',sans-serif;font-size:40px;color:#fff;letter-spacing:2px;margin-bottom:16px;}
+    .chart-svg{width:100%;display:block;}
+    .chart-line{stroke-dasharray:800;stroke-dashoffset:800;animation:drawLine 2s .8s ease forwards;}
+    @keyframes drawLine{to{stroke-dashoffset:0}}
+    .episode-preview{display:flex;align-items:center;gap:14px;margin-top:20px;padding-top:20px;border-top:1px solid var(--border);}
+    .play-btn{width:40px;height:40px;border-radius:50%;background:var(--gold);color:var(--bg);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;cursor:pointer;transition:transform .15s,box-shadow .15s;}
+    .play-btn:hover{transform:scale(1.1);box-shadow:0 0 16px rgba(201,168,76,.4);}
+    .ep-title{font-size:13px;font-weight:600;color:var(--text);}
+    .ep-meta{font-size:11px;color:var(--muted);margin-top:3px;font-family:'JetBrains Mono',monospace;}
+    .progress-bar{height:3px;background:var(--surface2);border-radius:2px;margin-top:8px;overflow:hidden;}
+    .progress-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--gold),var(--gold-light));animation:progressAnim 2.5s 1.5s ease forwards;}
+    @keyframes progressAnim{to{width:35%}}
+    .container{max-width:1200px;margin:0 auto;padding:0 40px;}
+    .section-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:3px;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:10px;}
+    .section-label::before{content:'';display:inline-block;width:20px;height:1px;background:var(--gold);}
+    .section-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,5vw,64px);line-height:1;letter-spacing:2px;color:#fff;}
+    .market-section{padding:60px 0;background:var(--bg);}
+    .market-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin-top:32px;}
+    .market-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:20px;text-align:center;transition:border-color .2s,transform .2s;}
+    .market-card:hover{border-color:var(--gold);transform:translateY(-3px);}
+    .market-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;}
+    .market-price{font-family:'Bebas Neue',sans-serif;font-size:26px;color:#fff;letter-spacing:1px;}
+    .market-change{font-size:12px;font-family:'JetBrains Mono',monospace;margin-top:4px;}
+    .market-change.up{color:var(--green);}.market-change.down{color:var(--red);}
+    .episodes-section{padding:80px 0;background:var(--bg2);}
+    .episodes-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:48px;}
+    .episodes-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;}
+    .episode-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:28px;display:flex;flex-direction:column;gap:12px;transition:border-color .2s,transform .2s,box-shadow .2s;position:relative;overflow:hidden;opacity:0;transform:translateY(20px);}
+    .episode-card.visible{animation:fadeUp .5s forwards;}
+    .episode-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),transparent);transform:scaleX(0);transform-origin:left;transition:transform .3s;}
+    .episode-card:hover{border-color:var(--gold);transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.4);}
+    .episode-card:hover::after{transform:scaleX(1);}
+    .ep-num{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:2px;}
+    .ep-tags{display:flex;gap:8px;flex-wrap:wrap;}
+    .tag{font-size:10px;padding:3px 10px;border-radius:20px;font-weight:600;}
+    .tag-red{background:rgba(239,68,68,.15);color:#F87171;}
+    .tag-gold{background:rgba(201,168,76,.15);color:var(--gold);}
+    .tag-green{background:rgba(34,197,94,.15);color:#4ADE80;}
+    .ep-card-title{font-size:15px;font-weight:700;color:#fff;line-height:1.4;}
+    .ep-card-desc{font-size:13px;color:var(--muted);line-height:1.6;flex:1;}
+    .ep-footer{display:flex;justify-content:space-between;align-items:center;}
+    .ep-duration{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);}
+    .ep-play-btn{width:32px;height:32px;border-radius:50%;background:var(--gold-dim);border:1px solid var(--border);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:11px;cursor:pointer;transition:background .2s,transform .15s;flex-shrink:0;}
+    .ep-play-btn:hover{background:var(--gold);color:var(--bg);transform:scale(1.1);}
+    .audio-wrap{display:none;margin-top:8px;}
+    .audio-wrap.open{display:block;}
+    .audio-wrap audio{width:100%;border-radius:6px;outline:none;}
+    .platforms{padding:60px 40px;background:var(--bg3);border-top:1px solid var(--border);border-bottom:1px solid var(--border);text-align:center;}
+    .platforms-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:3px;text-transform:uppercase;margin-bottom:24px;}
+    .platform-links{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+    .platform-btn{background:var(--surface);border:1px solid var(--border);color:var(--text);padding:10px 22px;border-radius:6px;text-decoration:none;font-size:13px;font-weight:500;transition:border-color .2s,color .2s,transform .15s;}
+    .platform-btn:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-2px);}
+    .newsletter{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:60px 40px;text-align:center;position:relative;overflow:hidden;margin:80px 0;}
+    .newsletter::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
+    .newsletter-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,5vw,60px);letter-spacing:3px;color:#fff;margin-bottom:12px;}
+    .newsletter-desc{font-size:15px;color:var(--muted);max-width:460px;margin:0 auto 32px;line-height:1.6;}
+    .newsletter-form{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+    .newsletter-form input{background:var(--bg2);border:1px solid var(--border);color:#fff;padding:14px 20px;border-radius:4px;font-size:14px;width:280px;outline:none;transition:border-color .2s;font-family:'Inter',sans-serif;}
+    .newsletter-form input:focus{border-color:var(--gold);}
+    .newsletter-form input::placeholder{color:var(--muted);}
+    .newsletter-form button{background:var(--gold);color:var(--bg);border:none;padding:14px 28px;border-radius:4px;font-size:14px;font-weight:700;cursor:pointer;transition:background .2s,transform .15s;font-family:'Inter',sans-serif;}
+    .newsletter-form button:hover{background:var(--gold-light);transform:translateY(-1px);}
+    .newsletter-form button:disabled{opacity:.6;cursor:not-allowed;}
+    .form-msg{margin-top:16px;font-size:13px;font-family:'JetBrains Mono',monospace;display:none;}
+    .form-msg.success{color:var(--green);display:block;}
+    .form-msg.error{color:var(--red);display:block;}
+    footer{background:var(--bg3);border-top:1px solid var(--border);padding:60px 40px 32px;}
+    .footer-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;padding-bottom:40px;border-bottom:1px solid var(--border);margin-bottom:28px;}
+    .footer-brand p{font-size:13px;color:var(--muted);line-height:1.7;margin-top:14px;max-width:260px;}
+    .footer-col h4{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:16px;}
+    .footer-col ul{list-style:none;}
+    .footer-col ul li{margin-bottom:10px;}
+    .footer-col ul li a{font-size:13px;color:var(--muted);text-decoration:none;transition:color .2s;}
+    .footer-col ul li a:hover{color:var(--gold);}
+    .footer-bottom{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--muted);}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+    @keyframes goldPulse{0%,100%{text-shadow:0 0 8px rgba(201,168,76,0)}50%{text-shadow:0 0 16px rgba(201,168,76,.5)}}
+    @media(max-width:768px){
+      nav{padding:0 20px;}.nav-links{display:none;}
+      .hero{padding:60px 20px;min-height:auto;}.hero-grid{grid-template-columns:1fr;gap:48px;}
+      .hero h1{font-size:56px;}.hero-stats{gap:24px;}
+      .container{padding:0 20px;}.episodes-section{padding:60px 0;}
+      .episodes-header{flex-direction:column;align-items:flex-start;gap:16px;}
+      .footer-grid{grid-template-columns:1fr 1fr;gap:32px;}
+      .footer-bottom{flex-direction:column;gap:8px;text-align:center;}
+      .newsletter{padding:40px 24px;}
+    }
+  </style>
+</head>
+<body>
+
+<div class="ticker-wrap">
+  <div class="ticker" id="ticker">
+    <span class="up">BTC — Loading…</span><span class="up">ETH — Loading…</span>
+    <span class="up">GOLD 2,341 ▲+0.5%</span><span class="down">EUR/USD 1.0842 ▼-0.3%</span>
+    <span class="up">CRUDE OIL 79.14 ▲+2.1%</span><span class="up">NASDAQ 18,924 ▲+1.7%</span>
+    <span class="up">BTC — Loading…</span><span class="up">ETH — Loading…</span>
+    <span class="up">GOLD 2,341 ▲+0.5%</span><span class="down">EUR/USD 1.0842 ▼-0.3%</span>
+    <span class="up">CRUDE OIL 79.14 ▲+2.1%</span><span class="up">NASDAQ 18,924 ▲+1.7%</span>
+  </div>
+</div>
+
+<nav>
+  <a href="index.html" class="nav-logo">TOP <span>TRADER</span> ZAMBIA PODCAST</a>
+  <ul class="nav-links">
+    <li><a href="index.html" class="active">Home</a></li>
+    <li><a href="episodes.html">Episodes</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="episodes.html" class="nav-cta">Listen Now</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="hero-grid">
+    <div class="hero-content">
+      <div class="hero-eyebrow">New Episode Every Wednesday</div>
+      <h1>TRADE<br/><span class="accent">SMARTER.</span><br/>THINK BIGGER.</h1>
+      <p class="hero-desc">Weekly deep dives into trading strategies, market psychology, and financial mastery — from Zambia to the global markets.</p>
+      <div class="hero-actions">
+        <a href="episodes.html" class="btn-primary">▶ &nbsp;Latest Episodes</a>
+        <a href="about.html" class="btn-outline">About the Show</a>
+      </div>
+      <div class="hero-stats">
+        <div><div class="stat-num">50+</div><div class="stat-label">Episodes</div></div>
+        <div><div class="stat-num">10K+</div><div class="stat-label">Listeners</div></div>
+        <div><div class="stat-num">30+</div><div class="stat-label">Expert Guests</div></div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="chart-card">
+        <div class="chart-header">
+          <span class="chart-title">S&amp;P 500 — LIVE</span>
+          <span class="chart-change">▲ +1.24%</span>
+        </div>
+        <div class="chart-value">5,842.30</div>
+        <svg class="chart-svg" viewBox="0 0 400 120" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="cg" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#C9A84C" stop-opacity="0.25"/>
+              <stop offset="100%" stop-color="#C9A84C" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <path d="M0,90 L40,85 L80,70 L120,75 L160,55 L200,60 L240,40 L280,35 L320,20 L360,25 L400,10 L400,120 L0,120 Z" fill="url(#cg)"/>
+          <path class="chart-line" d="M0,90 L40,85 L80,70 L120,75 L160,55 L200,60 L240,40 L280,35 L320,20 L360,25 L400,10" fill="none" stroke="#C9A84C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="episode-preview">
+          <div class="play-btn">▶</div>
+          <div>
+            <div class="ep-title">EP 52 — Why Most Traders Lose Money</div>
+            <div class="ep-meta">42 min · Released Wed</div>
+            <div class="progress-bar"><div class="progress-fill"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="market-section">
+  <div class="container">
+    <div class="section-label">Live Markets</div>
+    <div class="market-grid">
+      <div class="market-card"><div class="market-label">Bitcoin</div><div class="market-price" id="btc-p">—</div><div class="market-change up" id="btc-c">—</div></div>
+      <div class="market-card"><div class="market-label">Ethereum</div><div class="market-price" id="eth-p">—</div><div class="market-change up" id="eth-c">—</div></div>
+      <div class="market-card"><div class="market-label">S&amp;P 500</div><div class="market-price">5,842</div><div class="market-change up">▲ +1.24%</div></div>
+      <div class="market-card"><div class="market-label">Gold</div><div class="market-price">$2,341</div><div class="market-change up">▲ +0.5%</div></div>
+      <div class="market-card"><div class="market-label">EUR/USD</div><div class="market-price">1.0842</div><div class="market-change down">▼ −0.3%</div></div>
+      <div class="market-card"><div class="market-label">Crude Oil</div><div class="market-price">$79.14</div><div class="market-change up">▲ +2.1%</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="episodes-section">
+  <div class="container">
+    <div class="episodes-header">
+      <div>
+        <div class="section-label">Latest Episodes</div>
+        <h2 class="section-title">FRESH FROM<br/>THE STUDIO</h2>
+      </div>
+      <a href="episodes.html" class="btn-outline">View All →</a>
+    </div>
+    <div class="episodes-grid" id="episodes-grid">
+      <p style="color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:12px;">Loading episodes…</p>
+    </div>
+  </div>
+</section>
+
+<div class="platforms">
+  <div class="platforms-label">Listen on your favourite platform</div>
+  <div class="platform-links">
+    <a href="#" class="platform-btn">🎵 Spotify</a>
+    <a href="#" class="platform-btn">🎙 Apple Podcasts</a>
+    <a href="#" class="platform-btn">▶ YouTube</a>
+    <a href="#" class="platform-btn">☁ SoundCloud</a>
+    <a href="#" class="platform-btn">📻 Google Podcasts</a>
+  </div>
+</div>
+
+<section>
+  <div class="container">
+    <div class="newsletter">
+      <div class="section-label" style="justify-content:center;">Stay Ahead</div>
+      <div class="newsletter-title">GET THE WEEKLY EDGE</div>
+      <p class="newsletter-desc">Market briefs, episode drops, and exclusive trading tips — straight to your inbox. No spam. Ever.</p>
+      <form class="newsletter-form" id="nl-form">
+        <input type="email" name="email" placeholder="your@email.com" required/>
+        <button type="submit" id="nl-btn">Subscribe</button>
+      </form>
+      <div class="form-msg" id="nl-msg"></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="index.html" class="nav-logo">TOP <span>TRADER</span> ZAMBIA PODCAST</a>
+      <p>Empowering African traders and investors with the knowledge, tools, and mindset to compete on the global stage.</p>
+    </div>
+    <div class="footer-col"><h4>Navigate</h4><ul><li><a href="index.html">Home</a></li><li><a href="episodes.html">Episodes</a></li><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+    <div class="footer-col"><h4>Topics</h4><ul><li><a href="episodes.html">Forex Trading</a></li><li><a href="episodes.html">Crypto</a></li><li><a href="episodes.html">Stocks &amp; ETFs</a></li><li><a href="episodes.html">Personal Finance</a></li></ul></div>
+    <div class="footer-col"><h4>Listen</h4><ul><li><a href="#">Spotify</a></li><li><a href="#">Apple Podcasts</a></li><li><a href="#">YouTube</a></li><li><a href="#">SoundCloud</a></li></ul></div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Top Trader Zambia Podcast. All rights reserved.</p>
+    <p style="color:var(--gold);font-size:12px;font-family:'JetBrains Mono',monospace;">MADE IN ZAMBIA 🇿🇲</p>
+  </div>
+</footer>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getFirestore, collection, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const app = initializeApp({
+    apiKey:"AIzaSyA60R-q3v9TH5fNY_XSMF16puQujeU81cU",
+    authDomain:"top-trader-podcast.firebaseapp.com",
+    projectId:"top-trader-podcast",
+    storageBucket:"top-trader-podcast.firebasestorage.app",
+    messagingSenderId:"608240100319",
+    appId:"1:608240100319:web:1403517c2e20c217ad5a6a"
+  });
+  const db = getFirestore(app);
+
+  const tagColor = t => ({Psychology:'tag-red',Risk:'tag-gold',Forex:'tag-green',Strategy:'tag-gold',Crypto:'tag-gold',Bitcoin:'tag-green',Stocks:'tag-green',Finance:'tag-gold',Mindset:'tag-red'}[t]||'tag-gold');
+
+  async function loadEpisodes(){
+    const grid = document.getElementById('episodes-grid');
+    try{
+      const snap = await getDocs(query(collection(db,'episodes'),orderBy('createdAt','desc'),limit(3)));
+      if(snap.empty){grid.innerHTML='<p style="color:var(--muted);font-family:\'JetBrains Mono\',monospace;font-size:12px;">No episodes yet — check back soon!</p>';return;}
+      grid.innerHTML='';
+      snap.forEach(doc=>{
+        const ep=doc.data();
+        const tags=(ep.tags||[]).map(t=>`<span class="tag ${tagColor(t)}">${t}</span>`).join('');
+        const aid='aud-'+doc.id;
+        const div=document.createElement('div');
+        div.className='episode-card';
+        div.innerHTML=`
+          <div class="ep-num">EP ${String(ep.epNumber||'').padStart(3,'0')}</div>
+          <div class="ep-tags">${tags}</div>
+          <div class="ep-card-title">${ep.title||'Untitled'}</div>
+          <div class="ep-card-desc">${ep.description||''}</div>
+          <div class="ep-footer">
+            <span class="ep-duration">⏱ ${ep.duration||'—'}</span>
+            <div class="ep-play-btn" onclick="document.getElementById('${aid}').classList.toggle('open')">▶</div>
+          </div>
+          <div class="audio-wrap" id="${aid}">
+            <audio controls src="${ep.audioUrl||''}"></audio>
+          </div>`;
+        grid.appendChild(div);
+      });
+      const obs=new IntersectionObserver((entries)=>{entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('visible'),i*120);obs.unobserve(e.target);}});},{threshold:.1});
+      document.querySelectorAll('.episode-card').forEach(c=>obs.observe(c));
+    }catch(e){
+      console.error(e);
+      grid.innerHTML='<p style="color:var(--red);font-size:12px;font-family:\'JetBrains Mono\',monospace;">Could not load episodes.</p>';
+    }
+  }
+  loadEpisodes();
+</script>
+
+<script>
+  // LIVE CRYPTO
+  async function loadPrices(){
+    try{
+      const r=await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd&include_24hr_change=true');
+      const d=await r.json();
+      const bc=d.bitcoin.usd_24h_change.toFixed(2);
+      const ec=d.ethereum.usd_24h_change.toFixed(2);
+      document.getElementById('btc-p').textContent='$'+d.bitcoin.usd.toLocaleString();
+      document.getElementById('btc-c').textContent=(bc>=0?'▲ +':'▼ ')+bc+'%';
+      document.getElementById('btc-c').className='market-change '+(bc>=0?'up':'down');
+      document.getElementById('eth-p').textContent='$'+d.ethereum.usd.toLocaleString();
+      document.getElementById('eth-c').textContent=(ec>=0?'▲ +':'▼ ')+ec+'%';
+      document.getElementById('eth-c').className='market-change '+(ec>=0?'up':'down');
+      const t=document.getElementById('ticker');
+      const items=`
+        <span class="${bc>=0?'up':'down'}">BTC $${d.bitcoin.usd.toLocaleString()} ${bc>=0?'▲+':'▼'}${bc}%</span>
+        <span class="${ec>=0?'up':'down'}">ETH $${d.ethereum.usd.toLocaleString()} ${ec>=0?'▲+':'▼'}${ec}%</span>
+        <span class="up">GOLD 2,341 ▲+0.5%</span><span class="down">EUR/USD 1.0842 ▼-0.3%</span>
+        <span class="up">CRUDE OIL 79.14 ▲+2.1%</span><span class="up">NASDAQ 18,924 ▲+1.7%</span>`;
+      t.innerHTML=items+items;
+    }catch(e){console.warn('Price fetch failed');}
+  }
+  loadPrices();
+  setInterval(loadPrices,30000);
+
+  // NEWSLETTER
+  document.getElementById('nl-form').addEventListener('submit',async function(e){
+    e.preventDefault();
+    const btn=document.getElementById('nl-btn');
+    const msg=document.getElementById('nl-msg');
+    btn.textContent='Sending…';btn.disabled=true;
+    try{
+      const res=await fetch('https://formspree.io/f/xdavrrdw',{method:'POST',headers:{'Accept':'application/json'},body:new FormData(this)});
+      if(res.ok){msg.textContent='✓ You\'re in! Welcome to the edge.';msg.className='form-msg success';this.reset();}
+      else throw new Error();
+    }catch{msg.textContent='✕ Something went wrong. Try again.';msg.className='form-msg error';}
+    btn.textContent='Subscribe';btn.disabled=false;
+  });
+</script>
+</body>
+</html>

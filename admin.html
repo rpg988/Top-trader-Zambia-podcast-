@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin — Top Trader Zambia Podcast</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--gold:#C9A84C;--gold-light:#E8C86A;--bg:#080C14;--bg2:#0D1421;--bg3:#111827;--surface:#141E2E;--border:rgba(201,168,76,0.18);--text:#E8EDF5;--muted:#7A8BA8;--green:#22C55E;--red:#EF4444;}
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;}
+
+    /* LOGIN */
+    #login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;}
+    .login-box{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:48px 40px;width:100%;max-width:400px;text-align:center;position:relative;}
+    .login-box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);border-radius:12px 12px 0 0;}
+    .login-logo{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;color:#fff;margin-bottom:8px;}
+    .login-logo span{color:var(--gold);}
+    .login-sub{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:2px;margin-bottom:36px;}
+    .login-box input{width:100%;background:var(--bg2);border:1px solid var(--border);color:#fff;padding:14px 16px;border-radius:6px;font-size:14px;font-family:'Inter',sans-serif;outline:none;transition:border-color .2s;margin-bottom:12px;}
+    .login-box input:focus{border-color:var(--gold);}
+    .login-box input::placeholder{color:var(--muted);}
+    .login-btn{width:100%;background:var(--gold);color:var(--bg);border:none;padding:14px;border-radius:6px;font-size:14px;font-weight:700;letter-spacing:1px;cursor:pointer;transition:background .2s;font-family:'Inter',sans-serif;margin-top:4px;}
+    .login-btn:hover{background:var(--gold-light);}
+    .login-err{color:var(--red);font-size:12px;font-family:'JetBrains Mono',monospace;margin-top:12px;display:none;}
+
+    /* ADMIN */
+    #admin-screen{display:none;}
+    .admin-nav{background:var(--bg3);border-bottom:1px solid var(--border);padding:0 40px;height:60px;display:flex;align-items:center;justify-content:space-between;}
+    .admin-nav .logo{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:3px;color:#fff;}
+    .admin-nav .logo span{color:var(--gold);}
+    .logout-btn{background:transparent;border:1px solid var(--border);color:var(--muted);padding:6px 16px;border-radius:4px;font-size:12px;cursor:pointer;font-family:'JetBrains Mono',monospace;transition:border-color .2s,color .2s;}
+    .logout-btn:hover{border-color:var(--red);color:var(--red);}
+    .admin-body{max-width:800px;margin:0 auto;padding:40px 20px;}
+    .admin-title{font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:2px;color:#fff;margin-bottom:8px;}
+    .admin-sub{font-size:13px;color:var(--muted);margin-bottom:36px;}
+
+    .upload-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:32px;margin-bottom:32px;position:relative;}
+    .upload-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),transparent);border-radius:10px 10px 0 0;}
+    .card-title{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:24px;}
+    .form-row{margin-bottom:18px;}
+    .form-row label{display:block;font-size:12px;color:var(--muted);letter-spacing:.5px;margin-bottom:6px;font-family:'JetBrains Mono',monospace;}
+    .form-row input,.form-row textarea,.form-row select{width:100%;background:var(--bg2);border:1px solid var(--border);color:#fff;padding:12px 14px;border-radius:6px;font-size:14px;font-family:'Inter',sans-serif;outline:none;transition:border-color .2s;}
+    .form-row input:focus,.form-row textarea:focus,.form-row select:focus{border-color:var(--gold);}
+    .form-row input::placeholder,.form-row textarea::placeholder{color:var(--muted);}
+    .form-row textarea{resize:vertical;min-height:80px;}
+    .form-row select option{background:var(--bg3);}
+    .tags-wrap{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;}
+    .tag-check{display:none;}
+    .tag-label{background:var(--bg2);border:1px solid var(--border);color:var(--muted);padding:5px 14px;border-radius:20px;font-size:11px;cursor:pointer;transition:all .2s;font-weight:600;}
+    .tag-check:checked+.tag-label{background:rgba(201,168,76,.15);border-color:var(--gold);color:var(--gold);}
+    .file-drop{border:2px dashed var(--border);border-radius:8px;padding:32px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;position:relative;}
+    .file-drop:hover,.file-drop.dragover{border-color:var(--gold);background:var(--gold-dim);}
+    .file-drop input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;}
+    .file-drop-icon{font-size:28px;margin-bottom:8px;}
+    .file-drop-text{font-size:13px;color:var(--muted);}
+    .file-name{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold);margin-top:8px;}
+    .upload-progress{height:4px;background:var(--bg2);border-radius:2px;margin-top:16px;overflow:hidden;display:none;}
+    .upload-progress-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--gold),var(--gold-light));border-radius:2px;transition:width .3s;}
+    .submit-btn{width:100%;background:var(--gold);color:var(--bg);border:none;padding:16px;border-radius:6px;font-size:15px;font-weight:700;letter-spacing:1px;cursor:pointer;transition:background .2s;font-family:'Inter',sans-serif;margin-top:8px;}
+    .submit-btn:hover{background:var(--gold-light);}
+    .submit-btn:disabled{opacity:.5;cursor:not-allowed;}
+    .status-msg{text-align:center;margin-top:14px;font-family:'JetBrains Mono',monospace;font-size:12px;display:none;}
+    .status-msg.success{color:var(--green);display:block;}
+    .status-msg.error{color:var(--red);display:block;}
+
+    /* EPISODES LIST */
+    .ep-list-title{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:2px;color:#fff;margin-bottom:20px;}
+    .ep-item{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:20px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;gap:16px;}
+    .ep-item-info .ep-item-num{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:2px;}
+    .ep-item-info .ep-item-title{font-size:14px;font-weight:600;color:#fff;margin-top:4px;}
+    .ep-item-info .ep-item-dur{font-size:11px;color:var(--muted);margin-top:2px;font-family:'JetBrains Mono',monospace;}
+    .del-btn{background:transparent;border:1px solid rgba(239,68,68,.3);color:var(--red);padding:6px 14px;border-radius:4px;font-size:11px;cursor:pointer;transition:all .2s;font-family:'JetBrains Mono',monospace;white-space:nowrap;}
+    .del-btn:hover{background:rgba(239,68,68,.1);border-color:var(--red);}
+  </style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">TOP <span>TRADER</span> ZAMBIA PODCAST</div>
+    <div class="login-sub">ADMIN PANEL</div>
+    <input type="password" id="pwd" placeholder="Enter admin password" onkeydown="if(event.key==='Enter')doLogin()"/>
+    <button class="login-btn" onclick="doLogin()">LOGIN</button>
+    <div class="login-err" id="login-err">Incorrect password</div>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div id="admin-screen">
+  <div class="admin-nav">
+    <div class="logo">TOP <span>TRADER</span> <span style="color:var(--muted);font-size:14px;letter-spacing:1px;">ADMIN</span></div>
+    <button class="logout-btn" onclick="logout()">LOGOUT</button>
+  </div>
+  <div class="admin-body">
+    <div class="admin-title">Upload Episode</div>
+    <div class="admin-sub">Fill in the details and upload the MP3. It will appear on the site instantly.</div>
+
+    <div class="upload-card">
+      <div class="card-title">Episode Details</div>
+      <div class="form-row">
+        <label>Episode Number</label>
+        <input type="number" id="ep-num" placeholder="e.g. 53"/>
+      </div>
+      <div class="form-row">
+        <label>Title</label>
+        <input type="text" id="ep-title" placeholder="e.g. Why Most Traders Lose Money"/>
+      </div>
+      <div class="form-row">
+        <label>Description</label>
+        <textarea id="ep-desc" placeholder="Brief episode summary…"></textarea>
+      </div>
+      <div class="form-row">
+        <label>Duration</label>
+        <input type="text" id="ep-dur" placeholder="e.g. 42 min"/>
+      </div>
+      <div class="form-row">
+        <label>Tags</label>
+        <div class="tags-wrap">
+          <input type="checkbox" class="tag-check" id="t1" value="Forex"><label class="tag-label" for="t1">Forex</label>
+          <input type="checkbox" class="tag-check" id="t2" value="Crypto"><label class="tag-label" for="t2">Crypto</label>
+          <input type="checkbox" class="tag-check" id="t3" value="Stocks"><label class="tag-label" for="t3">Stocks</label>
+          <input type="checkbox" class="tag-check" id="t4" value="Psychology"><label class="tag-label" for="t4">Psychology</label>
+          <input type="checkbox" class="tag-check" id="t5" value="Strategy"><label class="tag-label" for="t5">Strategy</label>
+          <input type="checkbox" class="tag-check" id="t6" value="Risk"><label class="tag-label" for="t6">Risk</label>
+          <input type="checkbox" class="tag-check" id="t7" value="Bitcoin"><label class="tag-label" for="t7">Bitcoin</label>
+          <input type="checkbox" class="tag-check" id="t8" value="Finance"><label class="tag-label" for="t8">Finance</label>
+          <input type="checkbox" class="tag-check" id="t9" value="Mindset"><label class="tag-label" for="t9">Mindset</label>
+        </div>
+      </div>
+      <div class="form-row">
+        <label>MP3 File</label>
+        <div class="file-drop" id="file-drop">
+          <input type="file" id="mp3-file" accept="audio/mp3,audio/mpeg" onchange="handleFile(this)"/>
+          <div class="file-drop-icon">🎙</div>
+          <div class="file-drop-text">Tap to select MP3 or drag and drop</div>
+          <div class="file-name" id="file-name"></div>
+        </div>
+        <div class="upload-progress" id="up-progress">
+          <div class="upload-progress-fill" id="up-fill"></div>
+        </div>
+      </div>
+      <button class="submit-btn" id="submit-btn" onclick="uploadEpisode()">PUBLISH EPISODE</button>
+      <div class="status-msg" id="status-msg"></div>
+    </div>
+
+    <div class="ep-list-title">Published Episodes</div>
+    <div id="ep-list"><p style="color:var(--muted);font-size:13px;">Loading…</p></div>
+  </div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const app = initializeApp({
+    apiKey:"AIzaSyA60R-q3v9TH5fNY_XSMF16puQujeU81cU",
+    authDomain:"top-trader-podcast.firebaseapp.com",
+    projectId:"top-trader-podcast",
+    storageBucket:"top-trader-podcast.firebasestorage.app",
+    messagingSenderId:"608240100319",
+    appId:"1:608240100319:web:1403517c2e20c217ad5a6a"
+  });
+  const db = getFirestore(app);
+
+  const ADMIN_PASS = "TopTrader2026!";
+  const CLOUD_NAME = "dbpnehgdo";
+  const CLOUD_PRESET = "top_trader_audio"; // unsigned upload preset (set up in Cloudinary)
+
+  let selectedFile = null;
+
+  window.doLogin = function(){
+    const pwd = document.getElementById('pwd').value;
+    if(pwd === ADMIN_PASS){
+      document.getElementById('login-screen').style.display='none';
+      document.getElementById('admin-screen').style.display='block';
+      loadEpList();
+    } else {
+      document.getElementById('login-err').style.display='block';
+    }
+  };
+
+  window.logout = function(){
+    document.getElementById('login-screen').style.display='flex';
+    document.getElementById('admin-screen').style.display='none';
+    document.getElementById('pwd').value='';
+  };
+
+  window.handleFile = function(input){
+    selectedFile = input.files[0];
+    if(selectedFile){
+      document.getElementById('file-name').textContent = '✓ ' + selectedFile.name;
+    }
+  };
+
+  // Drag & drop
+  const drop = document.getElementById('file-drop');
+  drop.addEventListener('dragover', e=>{e.preventDefault();drop.classList.add('dragover');});
+  drop.addEventListener('dragleave', ()=>drop.classList.remove('dragover'));
+  drop.addEventListener('drop', e=>{
+    e.preventDefault();drop.classList.remove('dragover');
+    const f=e.dataTransfer.files[0];
+    if(f&&f.type.includes('audio')){
+      selectedFile=f;
+      document.getElementById('file-name').textContent='✓ '+f.name;
+    }
+  });
+
+  window.uploadEpisode = async function(){
+    const title=document.getElementById('ep-title').value.trim();
+    const num=document.getElementById('ep-num').value.trim();
+    const desc=document.getElementById('ep-desc').value.trim();
+    const dur=document.getElementById('ep-dur').value.trim();
+    const tags=[...document.querySelectorAll('.tag-check:checked')].map(c=>c.value);
+    const btn=document.getElementById('submit-btn');
+    const msg=document.getElementById('status-msg');
+    const bar=document.getElementById('up-progress');
+    const fill=document.getElementById('up-fill');
+
+    if(!title||!num||!selectedFile){
+      msg.textContent='✕ Please fill in title, episode number and select an MP3.';
+      msg.className='status-msg error';return;
+    }
+
+    btn.disabled=true;btn.textContent='Uploading…';
+    msg.style.display='none';
+    bar.style.display='block';fill.style.width='10%';
+
+    try{
+      // Upload to Cloudinary
+      const formData=new FormData();
+      formData.append('file',selectedFile);
+      formData.append('upload_preset',CLOUD_PRESET);
+      formData.append('resource_type','video'); // Cloudinary uses 'video' for audio
+
+      fill.style.width='40%';
+      const res=await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/video/upload`,{method:'POST',body:formData});
+      const data=await res.json();
+
+      if(!data.secure_url) throw new Error('Upload failed: '+JSON.stringify(data));
+
+      fill.style.width='75%';
+
+      // Save to Firestore
+      await addDoc(collection(db,'episodes'),{
+        epNumber:parseInt(num),
+        title,description:desc,duration:dur,tags,
+        audioUrl:data.secure_url,
+        createdAt:serverTimestamp()
+      });
+
+      fill.style.width='100%';
+      msg.textContent='✓ Episode published successfully!';
+      msg.className='status-msg success';
+
+      // Reset form
+      document.getElementById('ep-num').value='';
+      document.getElementById('ep-title').value='';
+      document.getElementById('ep-desc').value='';
+      document.getElementById('ep-dur').value='';
+      document.querySelectorAll('.tag-check').forEach(c=>c.checked=false);
+      document.getElementById('file-name').textContent='';
+      selectedFile=null;
+      loadEpList();
+
+    } catch(e){
+      console.error(e);
+      msg.textContent='✕ Error: '+e.message;
+      msg.className='status-msg error';
+    }
+    btn.disabled=false;btn.textContent='PUBLISH EPISODE';
+    setTimeout(()=>{bar.style.display='none';fill.style.width='0%';},2000);
+  };
+
+  async function loadEpList(){
+    const list=document.getElementById('ep-list');
+    try{
+      const snap=await getDocs(query(collection(db,'episodes'),orderBy('createdAt','desc')));
+      if(snap.empty){list.innerHTML='<p style="color:var(--muted);font-size:13px;">No episodes yet.</p>';return;}
+      list.innerHTML='';
+      snap.forEach(d=>{
+        const ep=d.data();
+        const div=document.createElement('div');
+        div.className='ep-item';
+        div.innerHTML=`
+          <div class="ep-item-info">
+            <div class="ep-item-num">EP ${String(ep.epNumber||'').padStart(3,'0')}</div>
+            <div class="ep-item-title">${ep.title||'Untitled'}</div>
+            <div class="ep-item-dur">${ep.duration||'—'} &nbsp;·&nbsp; ${(ep.tags||[]).join(', ')}</div>
+          </div>
+          <button class="del-btn" onclick="delEp('${d.id}',this)">DELETE</button>`;
+        list.appendChild(div);
+      });
+    }catch(e){list.innerHTML='<p style="color:var(--red);font-size:12px;">Failed to load episodes.</p>';}
+  }
+
+  window.delEp = async function(id, btn){
+    if(!confirm('Delete this episode? This cannot be undone.')) return;
+    btn.textContent='…';btn.disabled=true;
+    try{
+      await deleteDoc(doc(db,'episodes',id));
+      loadEpList();
+    }catch(e){alert('Delete failed: '+e.message);}
+  };
+</script>
+</body>
+</html>
